@@ -24,6 +24,7 @@ const leftArrowBtn = () => {
     const leftArrowIcon = document.createElement('i');
     leftArrowIcon.className = 'fas fa-chevron-left';
     leftArrowButton.appendChild(leftArrowIcon);
+    leftArrowButton.disabled = true;
     leftArrowButton.innerText = '<';
     leftArrowButton.classList.add('left-arrow-button')
     return leftArrowButton;
@@ -51,6 +52,7 @@ const rightArrowBtn = () => {
     const rightArrowIcon = document.createElement('i');
     rightArrowIcon.className = 'fas fa-chevron-right';
     rightArrowButton.appendChild(rightArrowIcon);
+    rightArrowButton.disabled = true;
     rightArrowButton.innerText = '>';
     rightArrowButton.classList.add('right-arrow-button')
     return rightArrowButton;

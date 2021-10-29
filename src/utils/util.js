@@ -65,7 +65,7 @@ export const addColor = (color) => {
     return elem;
 }
 
-export function returnMemorySelectionPanel(response) {
+export const returnMemorySelectionPanel = (response) => {
     const availableMemories = getSelectedColor(response);
     const memoryPanel = document.createElement('div');
     memoryPanel.classList.add('memory-panel');
@@ -81,12 +81,12 @@ export function returnMemorySelectionPanel(response) {
     return memoryPanel;
 }
 
-export function getSelectedColor(response) {
+export const getSelectedColor = (response) => {
     const selectedColor = response.swatches.variants.find(variant => variant.selected);
     return selectedColor.swatches.variants;
 }
 
-export function addMemory(memory) {
+export const addMemory = (memory) => {
     const elem = document.createElement('div');
     elem.classList.add('memory-block');
     elem.innerText = memory.name;
@@ -113,16 +113,17 @@ export const returnAddToCartButton = () => {
     const cartData = JSON.parse(window.localStorage.getItem("cartData"));
     const addToCartButton = document.createElement('button');
     const current_swatche = window.localStorage.getItem("current_swatche");
-    if(cartData[current_swatche]) { 
+    if (cartData[current_swatche]) {
         addToCartButton.disabled = true;
+        addToCartButton.innerText = 'REMOVE FROM CART';
         addToCartButton.classList.add('btn-disabled');
     } else {
+        addToCartButton.innerText = 'ADD TO CART';
         addToCartButton.disabled = false;
         addToCartButton.classList.remove('btn-disabled');
+        addToCartButton.className = 'product-add-to-cart';
     }
-    addToCartButton.className = 'product-add-to-cart';
     addToCartButton.id = 'btn-' + current_swatche;
-    addToCartButton.innerText = 'ADD TO CART';
     addToCartButton.addEventListener("click", addToCartButtonHandler);
     return addToCartButton;
 }
@@ -136,19 +137,20 @@ export const returnProductCategory = (productCategory) => {
 }
 
 const addToCartButtonHandler = () => {
-    const selectedProductSwatch = window.localStorage.getItem("current_swatche")
+    const selectedProductSwatch = window.localStorage.getItem("current_swatche");
     const cartData = JSON.parse(window.localStorage.getItem("cartData"));
-    const productQuanity =  document.querySelector('#product-quantity').value;
-    const buttonSelected =  document.querySelector('#btn-'+ selectedProductSwatch);
+    const productQuanity = document.querySelector('#product-quantity').value;
+    const buttonSelected = document.querySelector('#btn-' + selectedProductSwatch);
     buttonSelected.disabled = true;
+    buttonSelected.innerText = 'REMOVE FROM CART';
     buttonSelected.classList.add('btn-disabled');
 
-    if(cartData[selectedProductSwatch]) {
-       // cartData[selectedProductSwatch] = cartData[selectedProductSwatch] + productQuanity;
+    if (cartData[selectedProductSwatch]) {
+        // cartData[selectedProductSwatch] = cartData[selectedProductSwatch] + productQuanity;
     } else {
         cartData[selectedProductSwatch] = productQuanity;
     }
-
+    console.log('PRODUCT ADDED', cartData);
     window.localStorage.setItem("cartData", JSON.stringify(cartData));
 }
 
@@ -156,6 +158,7 @@ const fetchThisProductDetails = (swatchId) => {
     window.localStorage.setItem("current_swatche", swatchId);
     fetchProductDetails(swatchId);
 }
+
 function fetchThisColorProductDetails() {
     const colorName = this.colorName;
     const response = JSON.parse(window.localStorage.getItem('swatches_data'));
@@ -164,6 +167,7 @@ function fetchThisColorProductDetails() {
             variant.selected = true;
             // this is our new selection
             const firstLeaf = getFirstLeaf(variant);
+            window.localStorage.setItem("current_swatche", firstLeaf.id);
             fetchProductDetails(firstLeaf.id);
         } else {
             variant.selected = false;
@@ -174,15 +178,16 @@ function fetchThisColorProductDetails() {
     window.localStorage.setItem('swatches_data', JSON.stringify(response));
 }
 
-function fetchThisMemoryProductDetails() {
+function fetchThisMemoryProductDetails(){
     // have to mark this memory as selected and others as unselected
+    window.localStorage.setItem("current_swatche", this.swatchId);
     fetchProductDetails(this.swatchId);
 }
 
-function recursivelDeselectObject(variant) {
+const recursivelDeselectObject = (variant) => {
     const swatches = variant.swatches || { variants: [] };
     swatches.variants.forEach(variant => {
         variant.selected = false;
         recursivelDeselectObject(variant);
-    })
+    });
 }
