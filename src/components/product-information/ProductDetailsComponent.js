@@ -1,6 +1,6 @@
-import { returnColorSelectionPanel } from '../../utils/util';
+import { returnColorSelectionPanel,returnMemorySelectionPanel } from '../../utils/util';
 
-const ProductDetailsComponent = (productInfo, swatchesData) => {
+const ProductDetailsComponent = (productInfo) => {
     const productDetailsElement = document.createElement('div');
     productDetailsElement.className = 'product-details-container';
 
@@ -32,8 +32,13 @@ const ProductDetailsComponent = (productInfo, swatchesData) => {
     productDetailsElement.appendChild(productDescriptionElement);
     productDetailsElement.appendChild(horizanalRule2);
     // product Filters here
-    const getColorElements = returnColorSelectionPanel(swatchesData);
+    // color filters
+    const current_swatch = JSON.parse(window.localStorage.getItem('current_swatches'));
+    const getColorElements = returnColorSelectionPanel(current_swatch);
     productDetailsElement.appendChild(getColorElements);
+    // memory filters
+    const getMemoryElements = returnMemorySelectionPanel(current_swatch);
+    productDetailsElement.appendChild(getMemoryElements);
     productDetailsElement.appendChild(horizanalRule3);
     productDetailsElement.appendChild(productCategoryElement);
 

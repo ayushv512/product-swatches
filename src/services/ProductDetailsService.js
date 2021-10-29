@@ -1,6 +1,6 @@
 import ProductPage from '../page/ProductPage';
 
-const fetchProductDetails = async (productSwatchId, swatchesData) => {
+const fetchProductDetails = async (productSwatchId) => {
     const productDetailsURL = 'https://product-swatches.vercel.app/products/';
 
     try {
@@ -9,7 +9,7 @@ const fetchProductDetails = async (productSwatchId, swatchesData) => {
         });
         const productDetails = await productDetailsResponse.json();
         console.log("Response data:", productDetails);  // This is the JSON from our response
-        ProductPage(productDetails, swatchesData);
+        ProductPage(productDetails);
     } catch (err) {
         console.warn('Something went wrong.', err)
     }
