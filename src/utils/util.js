@@ -112,8 +112,8 @@ export const returnProductQuantity = () => {
 export const returnAddToCartButton = () => {
     const cartData = JSON.parse(window.localStorage.getItem("cartData"));
     const addToCartButton = document.createElement('button');
-    const current_swatche = window.localStorage.getItem("current_swatche");
-    if(cartData[current_swatche]) { 
+    const current_swatches = window.localStorage.getItem("current_swatches");
+    if(cartData[current_swatches]) { 
         addToCartButton.disabled = true;
         addToCartButton.classList.add('btn-disabled');
     } else {
@@ -121,7 +121,7 @@ export const returnAddToCartButton = () => {
         addToCartButton.classList.remove('btn-disabled');
     }
     addToCartButton.className = 'product-add-to-cart';
-    addToCartButton.id = 'btn-' + current_swatche;
+    addToCartButton.id = 'btn-' + current_swatches;
     addToCartButton.innerText = 'ADD TO CART';
     addToCartButton.addEventListener("click", addToCartButtonHandler);
     return addToCartButton;
@@ -136,7 +136,7 @@ export const returnProductCategory = (productCategory) => {
 }
 
 const addToCartButtonHandler = () => {
-    const selectedProductSwatch = window.localStorage.getItem("current_swatche")
+    const selectedProductSwatch = window.localStorage.getItem("current_swatches")
     const cartData = JSON.parse(window.localStorage.getItem("cartData"));
     const productQuanity =  document.querySelector('#product-quantity').value;
     const buttonSelected =  document.querySelector('#btn-'+ selectedProductSwatch);
@@ -153,7 +153,7 @@ const addToCartButtonHandler = () => {
 }
 
 const fetchThisProductDetails = (swatchId) => {
-    window.localStorage.setItem("current_swatche", swatchId);
+    window.localStorage.setItem("current_swatches", swatchId);
     fetchProductDetails(swatchId);
 }
 function fetchThisColorProductDetails() {
