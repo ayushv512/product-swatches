@@ -158,7 +158,7 @@ const fetchThisProductDetails = (swatchId) => {
 }
 function fetchThisColorProductDetails() {
     const colorName = this.colorName;
-    const response = JSON.parse(window.localStorage.getItem('current_swatches'));
+    const response = JSON.parse(window.localStorage.getItem('swatches_data'));
     response.swatches.variants.forEach(variant => {
         if (variant.name === colorName) {
             variant.selected = true;
@@ -171,7 +171,7 @@ function fetchThisColorProductDetails() {
             recursivelDeselectObject(variant);
         }
     });
-    window.localStorage.setItem('current_swatches', JSON.stringify(response));
+    window.localStorage.setItem('swatches_data', JSON.stringify(response));
 }
 
 function fetchThisMemoryProductDetails() {

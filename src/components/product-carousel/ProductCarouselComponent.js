@@ -33,8 +33,8 @@ const createDisplayImage = (productImages) => {
     const diplayImageContainer = document.createElement('div');
     diplayImageContainer.className = 'display-image-container';
     const diplayImageSrc = productImages[displayImage].replace('/832/832/', '/300/600/').replace('?q=70', '?q=100');
-    if (document.querySelector('product-display-image')) {
-        document.querySelector('product-display-image').src = diplayImageSrc
+    if (document.querySelector('.product-display-image')) {
+        document.querySelector('.product-display-image').src = diplayImageSrc
     }
     const productDisplayImage = document.createElement('img');
     productDisplayImage.src = diplayImageSrc;
@@ -66,14 +66,14 @@ const createImagesList = (productImages) => {
         imgElement.src = productImageItem.replace('/832/832/', '/100/150/').replace('?q=70', '?q=100');
         imgElement.className = 'product-image';
         imgElement.id = 'product-image-' + index;
-        imgElement.addEventListener('mouseover', (event) => moveoverImageHandler(event))
+        imgElement.addEventListener('click', (event) => imageClickHandler(event))
         imagesList.appendChild(imgElement);
     });
 
     return imagesList;
 }
 
-const moveoverImageHandler = (event) => {
+const imageClickHandler = (event) => {
     console.log(event.target.id.split('-')[2]);
     displayImage = event.target.id.split('-')[2];
     createDisplayImage(productImagesCopy);
