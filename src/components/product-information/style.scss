@@ -81,6 +81,25 @@
                 }
             }
         }
+    
+        .product-quantity {
+            width: 60px;
+            height: 40px;
+            margin: 20px 60px 20px 0;
+            font-size: 18px;
+            padding-left: 15px;
+            box-sizing: border-box;
+        }
+
+        .product-add-to-cart {
+            width: 200px;
+            height: 40px;
+            background: gray;
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            opacity: 100%;
+        }
 
         .product-category {
             color: #999999;
@@ -88,16 +107,10 @@
             font-size: 15px;
             letter-spacing: 0.2px;
         }
+
+        .btn-disabled {
+            opacity: 50%;
+        }
     }
     
 }
-
-
-
-
-
-
-
-
-
-

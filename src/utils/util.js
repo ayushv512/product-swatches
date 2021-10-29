@@ -39,44 +39,6 @@ export function getFirstLeaf(response) {
     }
 }
 
-export function getSelectionMatrix(response) {
-    const colorArray = [];
-    const storageArray = [];
-    const memoryArray = [];
-    const swatches = response.swatches;
-    if (swatches.name === 'colors') {
-        colorArray.length = 0;
-        swatches.variants.forEach(variant => {
-            colorArray.push(variant);
-            const swatches = variant.swatches;
-            if (swatches.name === 'memory') {
-                memoryArray.length = 0;
-                swatches.variants.forEach(variant => {
-                    memoryArray.push(variant);
-                    const swatches = variant.swatches;
-                    if (swatches.name === 'storage') {
-                        storageArray.length = 0;
-                        swatches.variant.forEach(variant => {
-                            storageArray.push(variant);
-                        })
-                    }
-                })
-            }
-        });
-    }
-    if (
-        swatches &&
-        swatches.variants &&
-        Array.isArray(swatches.variants) &&
-        swatches.variants.length
-    ) {
-        return getFirstLeaf(swatches.variants[0]);
-    } else {
-        response.selected = true;
-        return response;
-    }
-}
-
 export const returnColorSelectionPanel = (response) => {
     const colorPanel = document.createElement('div');
     colorPanel.classList.add('color-panel');
@@ -136,6 +98,36 @@ export function addMemory(memory) {
     return elem;
 }
 
+export const returnProductQuantity = () => {
+    const productQuantityElement = document.createElement('input');
+    productQuantityElement.type = 'number';
+    productQuantityElement.id = 'product-quantity';
+    productQuantityElement.className = 'product-quantity';
+    productQuantityElement.min = 1;
+    productQuantityElement.max = 10;
+    productQuantityElement.value = 0;
+    return productQuantityElement;
+}
+
+export const returnAddToCartButton = () => {
+    const cartData = JSON.parse(window.localStorage.getItem("cartData"));
+    const addToCartButton = document.createElement('button');
+    const current_swatche = window.localStorage.getItem("current_swatche");
+    if(cartData[current_swatche]) { 
+        addToCartButton.disabled = true;
+        addToCartButton.classList.add('btn-disabled');
+    } else {
+        addToCartButton.disabled = false;
+        addToCartButton.classList.remove('btn-disabled');
+    }
+    addToCartButton.className = 'product-add-to-cart';
+    addToCartButton.id = 'btn-' + current_swatche;
+    addToCartButton.innerText = 'ADD TO CART';
+    addToCartButton.addEventListener("click", addToCartButtonHandler);
+    return addToCartButton;
+}
+
+
 export const returnProductCategory = (productCategory) => {
     const productCategoryElement = document.createElement('div');
     productCategoryElement.className = 'product-category';
@@ -143,6 +135,24 @@ export const returnProductCategory = (productCategory) => {
     return productCategoryElement;
 }
 
-function fetchThisProductDetails(swatchId) {
+const addToCartButtonHandler = () => {
+    const selectedProductSwatch = window.localStorage.getItem("current_swatche")
+    const cartData = JSON.parse(window.localStorage.getItem("cartData"));
+    const productQuanity =  document.querySelector('#product-quantity').value;
+    const buttonSelected =  document.querySelector('#btn-'+ selectedProductSwatch);
+    buttonSelected.disabled = true;
+    buttonSelected.classList.add('btn-disabled');
+
+    if(cartData[selectedProductSwatch]) {
+       // cartData[selectedProductSwatch] = cartData[selectedProductSwatch] + productQuanity;
+    } else {
+        cartData[selectedProductSwatch] = productQuanity;
+    }
+
+    window.localStorage.setItem("cartData", JSON.stringify(cartData));
+}
+
+const fetchThisProductDetails = (swatchId) => {
+    window.localStorage.setItem("current_swatche", swatchId);
     fetchProductDetails(swatchId);
 }

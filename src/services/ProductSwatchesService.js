@@ -9,8 +9,8 @@ const fetchProductSwatches = async () => {
         });
         const swatchesData = await swatchesDataResponse.json();
         const firstLeaf = getFirstLeaf(swatchesData);
-        window.localStorage.setItem("whole_swatches", JSON.stringify(swatchesData));
-        window.localStorage.setItem("current_swatches", JSON.stringify(swatchesData));
+        window.localStorage.setItem("current_swatche", firstLeaf.id);
+        window.localStorage.setItem("swatches_data", JSON.stringify(swatchesData));
         console.log("Response data:", swatchesData);  // This is the JSON from our swatches response
         fetchProductDetails(firstLeaf.id);
     } catch (err) {

@@ -1,4 +1,5 @@
-import { returnProductTitle, returnProductPrice, returnProductDescription, returnProductCategory, returnColorSelectionPanel, returnMemorySelectionPanel } from '../../utils/util';
+import { returnProductTitle, returnProductPrice, returnProductDescription, 
+        returnProductCategory, returnColorSelectionPanel, returnMemorySelectionPanel, returnProductQuantity, returnAddToCartButton } from '../../utils/util';
 
 const ProductDetailsComponent = (productInfo) => {
     const productDetailsElement = document.createElement('div');
@@ -23,16 +24,23 @@ const ProductDetailsComponent = (productInfo) => {
     const horizanalRule2 = document.createElement('hr');
     productDetailsElement.appendChild(horizanalRule2);
 
-
-    // Product Filters here
-    // Color filters
-    const current_swatch = JSON.parse(window.localStorage.getItem('current_swatches'));
+    // Product Filters 
+    // Color Filters
+    const current_swatch = JSON.parse(window.localStorage.getItem('swatches_data'));
     const getColorElements = returnColorSelectionPanel(current_swatch);
     productDetailsElement.appendChild(getColorElements);
 
-    // memory filters
+    // Memory Filters
     const getMemoryElements = returnMemorySelectionPanel(current_swatch);
     productDetailsElement.appendChild(getMemoryElements);
+
+    // Product Quantity
+    const getProductQuantity = returnProductQuantity();
+    productDetailsElement.appendChild(getProductQuantity);
+
+    // Add to Cart
+    const getAddtoCart = returnAddToCartButton();
+    productDetailsElement.appendChild(getAddtoCart);
 
     const horizanalRule3 = document.createElement('hr');
     productDetailsElement.appendChild(horizanalRule3);
