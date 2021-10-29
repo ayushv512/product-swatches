@@ -30,9 +30,6 @@ export function getFirstLeaf(response) {
         swatches.variants.length
     ) {
         swatches.variants[0].selected = true;
-        for (let i = 1; i < swatches.variants.length; ++i) {
-            swatches.variants[i].selected = false;
-        }
         return getFirstLeaf(swatches.variants[0]);
     } else {
         return response;
@@ -62,6 +59,9 @@ export const addColor = (color) => {
     if (color.selected) {
         elem.classList.add('selected');
     }
+    elem.colorName = color.name;
+    elem.addEventListener("click", fetchThisColorProductDetails);
+
     return elem;
 }
 
@@ -94,7 +94,7 @@ export function addMemory(memory) {
         elem.classList.add('selected');
     }
     elem.swatchId = memory.id;
-    elem.addEventListener("click", fetchThisProductDetails.bind(null, elem.swatchId))
+    elem.addEventListener("click", fetchThisMemoryProductDetails);
     return elem;
 }
 
@@ -155,4 +155,34 @@ const addToCartButtonHandler = () => {
 const fetchThisProductDetails = (swatchId) => {
     window.localStorage.setItem("current_swatche", swatchId);
     fetchProductDetails(swatchId);
+}
+function fetchThisColorProductDetails() {
+    const colorName = this.colorName;
+    const response = JSON.parse(window.localStorage.getItem('current_swatches'));
+    response.swatches.variants.forEach(variant => {
+        if (variant.name === colorName) {
+            variant.selected = true;
+            // this is our new selection
+            const firstLeaf = getFirstLeaf(variant);
+            fetchProductDetails(firstLeaf.id);
+        } else {
+            variant.selected = false;
+            // recursively set false
+            recursivelDeselectObject(variant);
+        }
+    });
+    window.localStorage.setItem('current_swatches', JSON.stringify(response));
+}
+
+function fetchThisMemoryProductDetails() {
+    // have to mark this memory as selected and others as unselected
+    fetchProductDetails(this.swatchId);
+}
+
+function recursivelDeselectObject(variant) {
+    const swatches = variant.swatches || { variants: [] };
+    swatches.variants.forEach(variant => {
+        variant.selected = false;
+        recursivelDeselectObject(variant);
+    })
 }
