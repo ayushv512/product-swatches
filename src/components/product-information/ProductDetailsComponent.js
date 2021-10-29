@@ -1,4 +1,6 @@
-const ProductDetailsComponent = (productInfo) => {
+import { returnColorSelectionPanel } from '../../utils/util';
+
+const ProductDetailsComponent = (productInfo, swatchesData) => {
     const productDetailsElement = document.createElement('div');
     productDetailsElement.className = 'product-details-container';
 
@@ -29,6 +31,9 @@ const ProductDetailsComponent = (productInfo) => {
     productDetailsElement.appendChild(horizanalRule1);
     productDetailsElement.appendChild(productDescriptionElement);
     productDetailsElement.appendChild(horizanalRule2);
+    // product Filters here
+    const getColorElements = returnColorSelectionPanel(swatchesData);
+    productDetailsElement.appendChild(getColorElements);
     productDetailsElement.appendChild(horizanalRule3);
     productDetailsElement.appendChild(productCategoryElement);
 

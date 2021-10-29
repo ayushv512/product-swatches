@@ -1,6 +1,6 @@
 .product-information-container {
     width: 50%;
-    background: #FFFFFF;
+    background: #ffffff;
     padding: 50px;
 }
 
@@ -32,4 +32,17 @@
 .product-category {
     color: #808080;
     margin: 20px 0;
+}
+
+.color-panel {
+    display: flex;
+    .available-colors {
+        display: flex;
+        .color-circle {
+            height: 20px;
+            width: 20px;
+            margin: 0 5px;
+            border-radius: 50%;
+        }
+    }
 }

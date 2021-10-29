@@ -1,20 +1,18 @@
 import ProductPage from '../page/ProductPage';
 
-const fetchProductDetails = (productSwatchId) => {
+const fetchProductDetails = async (productSwatchId, swatchesData) => {
     const productDetailsURL = 'https://product-swatches.vercel.app/products/';
 
-    fetch(productDetailsURL + productSwatchId, {
-        method: 'GET'
-    }).then((response) => {
-        if (response.ok) { // The API call was successful!
-            return response.json();
-        } else {
-            return Promise.reject(response);
-        }
-    }).then((data) => {
-        console.log("Response data:" , data);  // This is the JSON from our response
-        ProductPage(data);
-    }).catch((err) => console.warn('Something went wrong.', err));  // There was an error
+    try {
+        const productDetailsResponse = await fetch(productDetailsURL + productSwatchId, {
+            method: 'GET'
+        });
+        const productDetails = await productDetailsResponse.json();
+        console.log("Response data:", productDetails);  // This is the JSON from our response
+        ProductPage(productDetails, swatchesData);
+    } catch (err) {
+        console.warn('Something went wrong.', err)
+    }
 }
 
 export default fetchProductDetails;

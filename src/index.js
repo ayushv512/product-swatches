@@ -1,5 +1,5 @@
-import fetchProductDetails from './services/ProductDetailsService';
+import fetchProductSwatches from './services/ProductSwatchesService';
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    fetchProductDetails('78546');
+    fetchProductSwatches();
 });
