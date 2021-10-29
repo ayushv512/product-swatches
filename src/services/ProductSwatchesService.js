@@ -1,4 +1,3 @@
-import ProductPage from '../page/ProductPage';
 import { getFirstLeaf } from '../utils/util';
 import fetchProductDetails from './ProductDetailsService';
 
@@ -10,7 +9,10 @@ const fetchProductSwatches = async () => {
         });
         const swatchesData = await swatchesDataResponse.json();
         const firstLeaf = getFirstLeaf(swatchesData);
-        fetchProductDetails(firstLeaf.id, swatchesData);
+        window.localStorage.setItem("whole_swatches", JSON.stringify(swatchesData));
+        window.localStorage.setItem("current_swatches", JSON.stringify(swatchesData));
+        console.log("Response data:", swatchesData);  // This is the JSON from our swatches response
+        fetchProductDetails(firstLeaf.id);
     } catch (err) {
         console.warn('Something went wrong.', err)
     }

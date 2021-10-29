@@ -1,6 +1,6 @@
-import { returnProductTitle, returnProductPrice, returnProductDescription, returnColorSelectionPanel, returnProductCategory } from '../../utils/util';
+import { returnProductTitle, returnProductPrice, returnProductDescription, returnProductCategory, returnColorSelectionPanel, returnMemorySelectionPanel } from '../../utils/util';
 
-const ProductDetailsComponent = (productInfo, swatchesData) => {
+const ProductDetailsComponent = (productInfo) => {
     const productDetailsElement = document.createElement('div');
     productDetailsElement.className = 'product-details-container';
     const { title: productTitle, price: productPrice, description: productDescription , category: productCategory} = productInfo;
@@ -23,9 +23,16 @@ const ProductDetailsComponent = (productInfo, swatchesData) => {
     const horizanalRule2 = document.createElement('hr');
     productDetailsElement.appendChild(horizanalRule2);
 
-    // Product Filters
-    const getColorElements = returnColorSelectionPanel(swatchesData);
+
+    // Product Filters here
+    // Color filters
+    const current_swatch = JSON.parse(window.localStorage.getItem('current_swatches'));
+    const getColorElements = returnColorSelectionPanel(current_swatch);
     productDetailsElement.appendChild(getColorElements);
+
+    // memory filters
+    const getMemoryElements = returnMemorySelectionPanel(current_swatch);
+    productDetailsElement.appendChild(getMemoryElements);
 
     const horizanalRule3 = document.createElement('hr');
     productDetailsElement.appendChild(horizanalRule3);
