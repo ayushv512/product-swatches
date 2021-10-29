@@ -30,52 +30,12 @@ export function getFirstLeaf(response) {
         swatches.variants.length
     ) {
         swatches.variants[0].selected = true;
-        for (let i = 1; i < swatches.variants.length; ++i) {
-            swatches.variants[i].selected = false;
-        }
         return getFirstLeaf(swatches.variants[0]);
     } else {
         return response;
     }
 }
 
-export function getSelectionMatrix(response) {
-    const colorArray = [];
-    const storageArray = [];
-    const memoryArray = [];
-    const swatches = response.swatches;
-    if (swatches.name === 'colors') {
-        colorArray.length = 0;
-        swatches.variants.forEach(variant => {
-            colorArray.push(variant);
-            const swatches = variant.swatches;
-            if (swatches.name === 'memory') {
-                memoryArray.length = 0;
-                swatches.variants.forEach(variant => {
-                    memoryArray.push(variant);
-                    const swatches = variant.swatches;
-                    if (swatches.name === 'storage') {
-                        storageArray.length = 0;
-                        swatches.variant.forEach(variant => {
-                            storageArray.push(variant);
-                        })
-                    }
-                })
-            }
-        });
-    }
-    if (
-        swatches &&
-        swatches.variants &&
-        Array.isArray(swatches.variants) &&
-        swatches.variants.length
-    ) {
-        return getFirstLeaf(swatches.variants[0]);
-    } else {
-        response.selected = true;
-        return response;
-    }
-}
 
 export const returnColorSelectionPanel = (response) => {
     const colorPanel = document.createElement('div');
@@ -100,6 +60,9 @@ export const addColor = (color) => {
     if (color.selected) {
         elem.classList.add('selected');
     }
+    elem.colorName = color.name;
+    elem.addEventListener("click", fetchThisColorProductDetails);
+
     return elem;
 }
 
@@ -132,7 +95,7 @@ export function addMemory(memory) {
         elem.classList.add('selected');
     }
     elem.swatchId = memory.id;
-    elem.addEventListener("click", fetchThisProductDetails.bind(null, elem.swatchId))
+    elem.addEventListener("click", fetchThisMemoryProductDetails);
     return elem;
 }
 
@@ -143,6 +106,33 @@ export const returnProductCategory = (productCategory) => {
     return productCategoryElement;
 }
 
-function fetchThisProductDetails(swatchId) {
-    fetchProductDetails(swatchId);
+function fetchThisColorProductDetails() {
+    const colorName = this.colorName;
+    const response = JSON.parse(window.localStorage.getItem('current_swatches'));
+    response.swatches.variants.forEach(variant => {
+        if (variant.name === colorName) {
+            variant.selected = true;
+            // this is our new selection
+            const firstLeaf = getFirstLeaf(variant);
+            fetchProductDetails(firstLeaf.id);
+        } else {
+            variant.selected = false;
+            // recursively set false
+            recursivelDeselectObject(variant);
+        }
+    });
+    window.localStorage.setItem('current_swatches', JSON.stringify(response));
+}
+
+function fetchThisMemoryProductDetails() {
+    // have to mark this memory as selected and others as unselected
+    fetchProductDetails(this.swatchId);
+}
+
+function recursivelDeselectObject(variant) {
+    const swatches = variant.swatches || { variants: [] };
+    swatches.variants.forEach(variant => {
+        variant.selected = false;
+        recursivelDeselectObject(variant);
+    })
 }
