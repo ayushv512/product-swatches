@@ -35,7 +35,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      templateContent: ({ htmlWebpackPlugin }) => '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Flipkart</title><link rel="icon" href="https://static-assets-web.flixcart.com/www/promos/new/20150528-140547-favicon-retina.ico" sizes="32x32"></head><body><div id=\"app\"></div></body></html>',
+      templateContent: ({ htmlWebpackPlugin }) => '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Flipkart</title><link rel="icon" href="https://static-assets-web.flixcart.com/www/promos/new/20150528-140547-favicon-retina.ico" sizes="32x32"><style>@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap");</style></head><body><div id=\"app\"></div></body></html>',
       filename: 'index.html',
     }),
   ],

@@ -8,18 +8,29 @@ const ProductCarouselComponent = (productImages) => {
     const productImagesContainer = document.createElement('div');
     productImagesContainer.className = 'product-images-container';
     productImagesContainer.appendChild(createImagesList(productImages));
+    productImagesContainer.appendChild(leftArrowBtn());
     productImagesContainer.appendChild(createDisplayImage(productImages));
-
+    productImagesContainer.appendChild(rightArrowBtn());
     return productImagesContainer;
+}
+
+const leftArrowBtn = () => {
+    const leftArrowButton = document.createElement('button');
+    const leftArrowIcon = document.createElement('i');
+    leftArrowIcon.className = 'fas fa-chevron-left';
+    leftArrowButton.appendChild(leftArrowIcon);
+    leftArrowButton.innerText = '<';
+    leftArrowButton.classList.add('left-arrow-button')
+    return leftArrowButton;
 }
 
 const createDisplayImage = (productImages) => {
     const diplayImageContainer = document.createElement('div');
     diplayImageContainer.className = 'display-image-container';
-
     const diplayImageSrc = productImages[displayImage].replace('/832/832/', '/300/600/').replace('?q=70', '?q=100');
+
     if(document.getElementById('product-display-image')){
-        document.getElementById('product-display-image').src = diplayImageSrc
+        document.getElementById('product-display-image').src = diplayImageSrc;
     } 
     const productDisplayImage = document.createElement('img');
     productDisplayImage.src = diplayImageSrc;
@@ -29,6 +40,16 @@ const createDisplayImage = (productImages) => {
     diplayImageContainer.appendChild(productDisplayImage);
     return diplayImageContainer
    
+}
+
+const rightArrowBtn = () => {
+    const rightArrowButton = document.createElement('button');
+    const rightArrowIcon = document.createElement('i');
+    rightArrowIcon.className = 'fas fa-chevron-right';
+    rightArrowButton.appendChild(rightArrowIcon);
+    rightArrowButton.innerText = '>';
+    rightArrowButton.classList.add('right-arrow-button')
+    return rightArrowButton;
 }
 
 const createImagesList = (productImages) => {
